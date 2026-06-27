@@ -1,0 +1,123 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String   @id @default(uuid())
+  name          String
+  email         String   @unique
+  password      String
+  plan          String   @default("FREE")
+  credits       Int      @default(0)
+  emailVerified Boolean  @default(false)
+  image         String?
+  role          String   @default("USER")
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+
+  videoJobs       VideoJob[]
+  favorites       UserFavorite[]
+  apiKeys         ApiKey[]
+  promptTemplates PromptTemplate[]
+
+  @@map("users")
+}
+
+model VideoJob {
+  id             String   @id @default(uuid())
+  userId         String
+  prompt         String
+  enhancedPrompt String?
+  provider       String
+  status         String   @default("PENDING")
+  resultUrl      String?
+  thumbnailUrl   String?
+  imageUrl       String?
+  videoRefUrl    String?
+  parameters     String?
+  errorMessage   String?
+  progress       Int         @default(0)
+  duration       Float?
+  cost           Float?
+  startedAt      DateTime?
+  completedAt    DateTime?
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+
+  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  favorites UserFavorite[]
+
+  @@index([userId])
+  @@index([status])
+  @@index([provider])
+  @@index([createdAt])
+  @@map("video_jobs")
+}
+
+model ProviderUsage {
+  id           String   @id @default(uuid())
+  provider     String
+  successCount Int      @default(0)
+  failCount    Int      @default(0)
+  avgLatency   Float    @default(0)
+  totalJobs    Int      @default(0)
+  lastUsedAt   DateTime @default(now())
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([provider])
+  @@index([lastUsedAt])
+  @@map("provider_usage")
+}
+
+model PromptTemplate {
+  id        String   @id @default(uuid())
+  title     String
+  content   String
+  category  String?
+  userId    String? 
+  isPublic  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([category])
+  @@index([isPublic])
+  @@map("prompt_templates")
+}
+
+model UserFavorite {
+  id         String   @id @default(uuid())
+  userId     String  
+  videoJobId String  
+  createdAt  DateTime @default(now())
+
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  videoJob VideoJob @relation(fields: [videoJobId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, videoJobId])
+  @@map("user_favorites")
+}
+
+model ApiKey {
+  id        String    @id @default(uuid())
+  userId    String   
+  name      String
+  key       String    @unique
+  lastUsedAt DateTime?
+  createdAt DateTime  @default(now())
+  expiresAt DateTime?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([key])
+  @@map("api_keys")
+}

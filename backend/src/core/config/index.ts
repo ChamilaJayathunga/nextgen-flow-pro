@@ -27,7 +27,7 @@ export const config = {
   },
 
   redis: {
-    url: requiredEnv('REDIS_URL'),
+    url: optionalEnv('REDIS_URL', ''),
   },
 
   jwt: {

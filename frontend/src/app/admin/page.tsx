@@ -85,7 +85,7 @@ export default function AdminPage() {
                   <div className={cn('w-10 h-10 rounded-xl bg-gradient-to-br flex items-center justify-center', stat.color)}>
                     <stat.icon className="w-5 h-5 text-white" />
                   </div>
-                  <Badge variant="success" dot size="sm">{stat.change}</Badge>
+                  <Badge variant="success" dot>{stat.change}</Badge>
                 </div>
                 <p className="text-2xl font-bold text-white">{stat.value}</p>
                 <p className="text-sm text-gray-400">{stat.label}</p>

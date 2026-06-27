@@ -268,7 +268,7 @@ export default function DashboardPage() {
                           ) : (
                             <div className="w-full h-full flex items-center justify-center"><Film className="w-6 h-6 text-gray-500" /></div>
                           )}
-                          <div className="absolute top-2 right-2"><Badge status={job.status} dot size="sm">{job.status}</Badge></div>
+                          <div className="absolute top-2 right-2"><Badge status={job.status} dot>{job.status}</Badge></div>
                         </div>
                         <div className="p-2.5">
                           <p className="text-xs font-medium text-white truncate">{job.title || 'Untitled'}</p>

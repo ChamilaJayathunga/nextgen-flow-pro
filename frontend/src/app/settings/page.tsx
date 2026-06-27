@@ -33,11 +33,11 @@ export default function SettingsPage() {
   });
 
   const tabItems = [
-    { value: 'profile', label: 'Profile', icon: User },
-    { value: 'account', label: 'Account', icon: Lock },
-    { value: 'api-keys', label: 'API Keys', icon: Key },
-    { value: 'notifications', label: 'Notifications', icon: Bell },
-    { value: 'appearance', label: 'Appearance', icon: Sun },
+    { value: 'profile', label: 'Profile', icon: <User className="w-4 h-4" /> },
+    { value: 'account', label: 'Account', icon: <Lock className="w-4 h-4" /> },
+    { value: 'api-keys', label: 'API Keys', icon: <Key className="w-4 h-4" /> },
+    { value: 'notifications', label: 'Notifications', icon: <Bell className="w-4 h-4" /> },
+    { value: 'appearance', label: 'Appearance', icon: <Sun className="w-4 h-4" /> },
   ];
 
   return (
